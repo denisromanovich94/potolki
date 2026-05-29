@@ -1,0 +1,77 @@
+name: elidom
+
+services:
+  php:
+    build:
+      context: ./docker/php
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: elidom-php
+    restart: unless-stopped
+    working_dir: /var/www/backend
+    volumes:
+      - ./backend:/var/www/backend
+      - backend-vendor:/var/www/backend/vendor
+    environment:
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: "1"
+    networks:
+      - elidom
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: elidom-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend:/var/www/backend
+      - backend-vendor:/var/www/backend/vendor
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+    networks:
+      - elidom
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: elidom-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-elidom}
+      POSTGRES_USER: ${DB_USERNAME:-elidom}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - elidom
+
+  node:
+    build:
+      context: ./docker/node
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: elidom-node
+    restart: unless-stopped
+    working_dir: /var/www/frontend
+    volumes:
+      - ./frontend:/var/www/frontend
+      - frontend-node-modules:/var/www/frontend/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      NUXT_PUBLIC_API_BASE: http://localhost/api
+    networks:
+      - elidom
+
+volumes:
+  pg-data:
+  backend-vendor:
+  frontend-node-modules:
+
+networks:
+  elidom:
+    driver: bridge

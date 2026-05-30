@@ -97,6 +97,7 @@ body.is-locked { overflow: hidden; }
   letter-spacing: .005em;
   text-transform: uppercase;
   text-wrap: balance;
+  max-width: 80ch;
 }
 
 .t-sub { color: var(--muted); text-wrap: pretty; }

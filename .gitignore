@@ -43,3 +43,14 @@ yarn-error.log*
 
 # ── Прелайаут и эксперименты ──────────────────────────────
 /.playwright-mcp
+
+# ── Рабочие материалы клиента (не для репозитория) ────────
+/prototype
+/logo.png
+/logo.svg
+/logo-subtitle.png
+/logo-subtitle.svg
+/ablation.regular.otf
+/ТЗ-ЭЛИДОМ.md
+/тексты-варианты.md
+/.claude

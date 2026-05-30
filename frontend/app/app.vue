@@ -3,4 +3,5 @@
   <TheNav />
   <NuxtPage />
   <BriefModal />
+  <PartnersModal />
 </template>

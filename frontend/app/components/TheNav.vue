@@ -11,7 +11,7 @@ const links = [
   { label: 'О компании', href: '#about' },
   { label: 'Услуги', href: '#services' },
   { label: 'Портфолио', href: '#portfolio' },
-  { label: 'Сотрудничество', href: '#partners' },
+  { label: 'Сотрудничество', href: '/partners' },
 ]
 
 function toggle () {
@@ -39,7 +39,7 @@ onUnmounted(() => { document.body.classList.remove('is-locked') })
       <nav class="nav__desktop" aria-label="Основная навигация">
         <ul class="nav__links">
           <li v-for="l in links" :key="l.href">
-            <a :href="l.href">{{ l.label }}</a>
+            <NuxtLink :to="l.href">{{ l.label }}</NuxtLink>
           </li>
         </ul>
       </nav>
@@ -68,10 +68,10 @@ onUnmounted(() => { document.body.classList.remove('is-locked') })
       <div v-show="open" id="nav-overlay" class="nav__overlay" role="dialog" aria-modal="true" aria-label="Меню">
         <ul class="nav__overlay-links">
           <li v-for="(l, i) in links" :key="l.href">
-            <a :href="l.href" @click="close">
+            <NuxtLink :to="l.href" @click="close">
               <span class="nav__overlay-i">{{ String(i + 1).padStart(2, '0') }}</span>
               {{ l.label }}
-            </a>
+            </NuxtLink>
           </li>
         </ul>
         <div class="nav__overlay-foot">
@@ -103,7 +103,7 @@ onUnmounted(() => { document.body.classList.remove('is-locked') })
   z-index: 41;
 }
 
-/* ── Бренд (только знак, без текста) ───────────────────── */
+/* ── Бренд (только знак, без текста) ───────────────────── */
 .nav__brand { display: inline-flex; align-items: center; }
 .nav__brand img {
   width: 72px;
@@ -240,7 +240,7 @@ onUnmounted(() => { document.body.classList.remove('is-locked') })
 
 /* ── ≥900px — десктоп-меню вместо бургера ──────────────── */
 @media (min-width: 900px) {
-  /* меню абсолютно по центру шапки, brand слева, контакты справа */
+  /* меню абсолютно по центру шапки, brand слева, контакты справа */
   .nav__row { justify-content: flex-start; }
   .nav__desktop {
     display: block;
